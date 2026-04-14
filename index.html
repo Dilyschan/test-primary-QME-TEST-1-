@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Placement Test - Bài Thi Đánh Giá Tiếng Anh</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                        'fredoka': ['Fredoka', 'cursive'],
+                    },
+                    colors: {
+                        primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e40af', 900: '#1e3a8a' },
+                        accent: { 50: '#fef3c7', 100: '#fde68a', 200: '#fcd34d', 300: '#fbbf24', 400: '#f59e0b', 500: '#d97706', 600: '#b45309' },
+                        success: { 50: '#ecfdf5', 500: '#10b981', 600: '#059669' },
+                        danger: { 50: '#fef2f2', 500: '#ef4444', 600: '#dc2626' },
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; }
+        .font-fredoka { font-family: 'Fredoka', cursive; }
+
+        /* Page transitions */
+        .page { display: none; opacity: 0; transform: translateY(20px); }
+        .page.active { display: block; animation: fadeInUp 0.5s ease forwards; }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Floating shapes */
+        .float-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: floatAnim 8s ease-in-out infinite;
+        }
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        /* Progress bar */
+        .progress-fill { transition: width 0.5s ease; }
+
+        /* Radio/Checkbox custom */
+        .option-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid #e5e7eb;
+        }
+        .option-card:hover {
+            border-color: #93c5fd;
+            background: #eff6ff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+        }
+        .option-card.selected {
+            border-color: #3b82f6;
+            background: #eff6ff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+        }
+        .option-card.selected .option-dot {
+            background: #3b82f6;
+            border-color: #3b82f6;
+        }
+        .option-dot {
+            width: 20px; height: 20px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .option-card.selected .option-dot::after {
+            content: '';
+            width: 10px; height: 10px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        /* Timer pulse */
+        .timer-warning { animation: pulse 1s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+        /* Toast notification */
+        .toast {
+            position: fixed; top: 20px; right: 20px; z-index: 9999;
+            padding: 16px 24px; border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            transform: translateX(120%);
+            transition: transform 0.4s ease;
+        }
+        .toast.show { transform: translateX(0); }
+
+        /* Confetti */
+        .confetti-piece {
+            position: fixed;
+            width: 10px; height: 10px;
+            top: -10px;
+            animation: confettiFall 3s ease-in forwards;
+        }
+        @keyframes confettiFall {
+            0% { top: -10px; opacity: 1; transform: rotate(0deg) translateX(0); }
+            100% { top: 110vh; opacity: 0; transform: rotate(720deg) translateX(100px); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Input focus */
+        input:focus, select:focus { outline: none; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2); }
+
+        /* Nav dots */
+        .nav-dot { transition: all 0.3s ease; }
+        .nav-dot.active { width: 32px; border-radius: 8px; }
+
+        /* Print styles */
+        @media print {
+            .no-print { display: none !important; }
+        }
+
+        .question-img { 
+            width: 120px; height: 120px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+        }
+
+        /* Matching lines */
+        .match-item { transition: all 0.2s ease; }
+        .match-item:hover { transform: scale(1.02); }
+        .match-item.selected-match { 
+            border-color: #3b82f6 !important;
+            background: #eff6ff !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-inter">
+
+    <!-- Toast -->
+    <div id="toast" class="toast bg-white text-gray-800 flex items-center gap-3">
+        <i data-lucide="check-circle" class="w-5 h-5 text-success-500"></i>
+        <span id="toast-msg">Thông tin đã được lưu!</span>
+    </div>
+
+    <!-- ===================== PAGE 1: LANDING ===================== -->
+    <div id="page-landing" class="page active min-h-screen bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900 relative overflow-hidden">
+        <!-- Floating shapes -->
+        <div class="float-shape w-64 h-64 bg-white top-10 -left-20" style="animation-delay: 0s;"></div>
+        <div class="float-shape w-48 h-48 bg-accent-400 top-1/3 right-10" style="animation-delay: 2s;"></div>
+        <div class="float-shape w-32 h-32 bg-success-500 bottom-20 left-1/4" style="animation-delay: 4s;"></div>
+        <div class="float-shape w-40 h-40 bg-accent-300 bottom-10 right-1/3" style="animation-delay: 6s;"></div>
+
+        <div class="relative z-10 min-h-screen flex items-center justify-center px-4 py-8">
+            <div class="max-w-lg w-full">
+                <!-- Logo area -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 text-accent-300"></i>
+                        <span class="text-white/80 text-sm font-medium">QUANG MINH EDUCATION CENTER</span>
+                    </div>
+                    <h1 class="font-fredoka text-4xl md:text-5xl text-white mb-4 leading-tight">
+                        English<br>
+                        <span class="text-accent-300">Placement Test</span>
+                    </h1>
+                    <p class="text-primary-200 text-lg">Bài kiểm tra đánh giá trình độ tiếng Anh<br>chuẩn Cambridge Starters & Movers</p>
+                </div>
+
+                <!-- Info card -->
+                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-6 mb-6 border border-white/20">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="bg-white/20 rounded-xl p-3 mb-2">
+                                <i data-lucide="clock" class="w-6 h-6 text-white mx-auto"></i>
+                            </div>
+                            <p class="text-white font-semibold">40 phút</p>
+                            <p class="text-primary-300 text-xs">Thời gian làm bài</p>
+                        </div>
+                        <div>
+                            <div class="bg-white/20 rounded-xl p-3 mb-2">
+                                <i data-lucide="list-checks" class="w-6 h-6 text-white mx-auto"></i>
+                            </div>
+                            <p class="text-white font-semibold">35 câu</p>
+                            <p class="text-primary-300 text-xs">Tổng số câu hỏi</p>
+                        </div>
+                        <div>
+                            <div class="bg-white/20 rounded-xl p-3 mb-2">
+                                <i data-lucide="bar-chart-3" class="w-6 h-6 text-white mx-auto"></i>
+                            </div>
+                            <p class="text-white font-semibold">5 phần</p>
+                            <p class="text-primary-300 text-xs">Cấu trúc đề thi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Parts overview -->
+                <div class="space-y-2 mb-8">
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
+                        <span class="bg-accent-400 text-white text-xs font-bold px-2.5 py-1 rounded-lg">P1</span>
+                        <span class="text-white text-sm">Vocabulary - Look & Choose</span>
+                        <span class="text-primary-300 text-xs ml-auto">10 câu</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
+                        <span class="bg-accent-400 text-white text-xs font-bold px-2.5 py-1 rounded-lg">P2</span>
+                        <span class="text-white text-sm">Grammar - Choose the Correct Answer</span>
+                        <span class="text-primary-300 text-xs ml-auto">10 câu</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
+                        <span class="bg-accent-400 text-white text-xs font-bold px-2.5 py-1 rounded-lg">P3</span>
+                        <span class="text-white text-sm">Reading - Read & Answer</span>
+                        <span class="text-primary-300 text-xs ml-auto">5 câu</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
+                        <span class="bg-accent-400 text-white text-xs font-bold px-2.5 py-1 rounded-lg">P4</span>
+                        <span class="text-white text-sm">Matching - Match the Words</span>
+                        <span class="text-primary-300 text-xs ml-auto">5 câu</span>
+                    </div>
+                    <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10">
+                        <span class="bg-accent-400 text-white text-xs font-bold px-2.5 py-1 rounded-lg">P5</span>
+                        <span class="text-white text-sm">Fill in the Blanks</span>
+                        <span class="text-primary-300 text-xs ml-auto">5 câu</span>
+                    </div>
+                </div>
+
+                <!-- CTA -->
+                <button onclick="showPage('page-info')" class="w-full bg-accent-400 hover:bg-accent-500 text-white font-bold py-4 px-6 rounded-2xl text-lg transition-all hover:shadow-lg hover:shadow-accent-400/30 active:scale-[0.98] flex items-center justify-center gap-2">
+                    Bắt Đầu Làm Bài
+                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </button>
+                <p class="text-primary-300 text-xs text-center mt-3">* Kết quả sẽ được gửi về Zalo phụ huynh sau khi hoàn thành.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PAGE 2: INFO FORM ===================== -->
+    <div id="page-info" class="page min-h-screen bg-gray-50">
+        <div class="min-h-screen flex items-center justify-center px-4 py-8">
+            <div class="max-w-md w-full">
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-2xl mb-4">
+                        <i data-lucide="user-plus" class="w-8 h-8 text-primary-600"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-gray-800">Thông Tin Học Viên</h2>
+                    <p class="text-gray-500 mt-1">Vui lòng điền thông tin trước khi làm bài</p>
+                </div>
+
+                <!-- Form -->
+                <form id="info-form" class="space-y-4">
+                    <!-- Parent name -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="users" class="w-4 h-4 text-gray-400"></i>
+                                Tên phụ huynh <span class="text-danger-500">*</span>
+                            </span>
+                        </label>
+                        <input type="text" id="parent-name" required placeholder="VD: Nguyễn Văn A"
+                            class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 focus:border-primary-500 transition-colors">
+                    </div>
+
+                    <!-- Parent phone -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="phone" class="w-4 h-4 text-gray-400"></i>
+                                Số điện thoại phụ huynh <span class="text-danger-500">*</span>
+                            </span>
+                        </label>
+                        <input type="tel" id="parent-phone" required placeholder="VD: 0912 345 678"
+                            class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 focus:border-primary-500 transition-colors">
+                    </div>
+
+                    <!-- Student name -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                            <span class="flex items-center gap-1.5">
+                                <i data-lucide="user" class="w-4 h-4 text-gray-400"></i>
+                                Tên học viên <span class="text-danger-500">*</span>
+                            </span>
+                        </label>
+                        <input type="text" id="student-name" required placeholder="VD: Nguyễn Minh Anh"
+                            class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-800 placeholder-gray-400 focus:border-primary-500 transition-colors">
+                    </div>
+
+                    <!-- Age + Class row -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                <span class="flex items-center gap-1.5">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-gray-400"></i>
+                                    Tuổi <span class="text-danger-500">*</span>
+                                </span>
+                            </label>
+                            <select id="student-age" required
+                                class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-800 focus:border-primary-500 transition-colors appearance-none">
+                                <option value="">Chọn tuổi</option>
+                                <option value="5">5 tuổi</option>
+                                <option value="6">6 tuổi</option>
+                                <option value="7">7 tuổi</option>
+                                <option value="8">8 tuổi</option>
+                                <option value="9">9 tuổi</option>
+                                <option value="10">10 tuổi</option>
+                                <option value="11">11 tuổi</option>
+                                <option value="12">12 tuổi</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold text-gray-700 mb-1.5">
+                                <span class="flex items-center gap-1.5">
+                                    <i data-lucide="school" class="w-4 h-4 text-gray-400"></i>
+                                    Lớp <span class="text-danger-500">*</span>
+                                </span>
+                            </label>
+                            <select id="student-class" required
+                                class="w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl text-gray-800 focus:border-primary-500 transition-colors appearance-none">
+                                <option value="">Chọn lớp</option>
+                                <option value="Lớp 1">Lớp 1</option>
+                                <option value="Lớp 2">Lớp 2</option>
+                                <option value="Lớp 3">Lớp 3</option>
+                                <option value="Lớp 4">Lớp 4</option>
+                                <option value="Lớp 5">Lớp 5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Error msg -->
+                    <div id="form-error" class="hidden bg-danger-50 text-danger-600 text-sm px-4 py-3 rounded-xl flex items-center gap-2">
+                        <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+                        <span>Vui lòng điền đầy đủ thông tin!</span>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="w-full bg-primary-600 hover:bg-primary-700 text-white font-bold py-4 px-6 rounded-xl text-lg transition-all hover:shadow-lg hover:shadow-primary-600/30 active:scale-[0.98] flex items-center justify-center gap-2 mt-6">
+                        Vào Thi Ngay
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </form>
+
+                <button onclick="showPage('page-landing')" class="w-full text-gray-400 hover:text-gray-600 text-sm mt-4 flex items-center justify-center gap-1 transition-colors">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Quay lại trang chủ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PAGE 3: EXAM ===================== -->
+    <div id="page-exam" class="page min-h-screen bg-gray-50">
+        <!-- Top bar -->
+        <div class="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-sm">
+            <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                        <i data-lucide="file-text" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold text-gray-800 text-sm leading-tight" id="exam-student-name">Học viên</p>
+                        <p class="text-xs text-gray-400" id="exam-student-class">Lớp</p>
+                    </div>
+                </div>
+
+                <!-- Timer -->
+                <div id="timer-display" class="flex items-center gap-2 bg-gray-100 px-4 py-2 rounded-xl">
+                    <i data-lucide="clock" class="w-4 h-4 text-primary-600"></i>
+                    <span id="timer" class="font-bold text-gray-800 tabular-nums">40:00</span>
+                </div>
+
+                <!-- Part info -->
+                <div class="text-right">
+                    <p class="text-xs text-gray-400" id="current-part-label">Part 1/5</p>
+                    <p class="text-sm font-semibold text-primary-600" id="current-part-name">Vocabulary</p>
+                </div>
+            </div>
+
+            <!-- Progress bar -->
+            <div class="h-1 bg-gray-200">
+                <div id="progress-bar" class="progress-fill h-full bg-gradient-to-r from-primary-500 to-accent-400 rounded-r-full" style="width: 0%"></div>
+            </div>
+
+            <!-- Navigation dots -->
+            <div class="max-w-3xl mx-auto px-4 py-2 flex items-center gap-2 overflow-x-auto" id="nav-dots">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+
+        <!-- Exam content -->
+        <div class="max-w-3xl mx-auto px-4 py-6" id="exam-content">
+            <!-- Questions rendered by JS -->
+        </div>
+
+        <!-- Bottom nav -->
+        <div class="sticky bottom-0 bg-white/80 backdrop-blur-lg border-t border-gray-200 z-40">
+            <div class="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+                <button id="btn-prev" onclick="navigateQuestion(-1)" disabled
+                    class="flex items-center gap-2 px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                    Câu trước
+                </button>
+                <span class="text-sm text-gray-500 font-medium" id="question-counter">1 / 35</span>
+                <button id="btn-next" onclick="navigateQuestion(1)"
+                    class="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all">
+                    Câu sau
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== PAGE 4: RESULTS ===================== -->
+    <div id="page-results" class="page min-h-screen bg-gray-50">
+        <div class="max-w-2xl mx-auto px-4 py-8">
+            <!-- Score header -->
+            <div class="text-center mb-8">
+                <div id="result-emoji" class="text-6xl mb-4">🎉</div>
+                <h2 class="font-fredoka text-3xl text-gray-800 mb-2">Kết Quả Bài Thi</h2>
+                <p class="text-gray-500" id="result-student-info">Học viên</p>
+            </div>
+
+            <!-- Score circle -->
+            <div class="flex justify-center mb-8">
+                <div class="relative w-44 h-44">
+                    <svg class="w-44 h-44 -rotate-90" viewBox="0 0 160 160">
+                        <circle cx="80" cy="80" r="70" stroke="#e5e7eb" stroke-width="12" fill="none"/>
+                        <circle id="score-ring" cx="80" cy="80" r="70" stroke="#3b82f6" stroke-width="12" fill="none"
+                            stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" style="transition: stroke-dashoffset 1.5s ease;"/>
+                    </svg>
+                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                        <span id="score-number" class="text-4xl font-bold text-gray-800">0</span>
+                        <span class="text-gray-400 text-sm">/ 35 câu</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score breakdown -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-8" id="score-breakdown">
+                <!-- Generated by JS -->
+            </div>
+
+            <!-- Level badge -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6" id="level-badge">
+                <!-- Generated by JS -->
+            </div>
+
+            <!-- Answers review -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+                <div class="p-4 border-b border-gray-100 flex items-center gap-2">
+                    <i data-lucide="clipboard-list" class="w-5 h-5 text-primary-600"></i>
+                    <h3 class="font-bold text-gray-800">Chi tiết câu trả lời</h3>
+                </div>
+                <div id="answers-review" class="divide-y divide-gray-50">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col gap-3">
+                <button onclick="window.print()" class="w-full py-3 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    In kết quả
+                </button>
+                <button onclick="location.reload()" class="w-full py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    Làm lại bài
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SUBMIT CONFIRM MODAL ===================== -->
+    <div id="modal-submit" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display:none;">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-accent-100 rounded-2xl mb-3">
+                    <i data-lucide="alert-triangle" class="w-7 h-7 text-accent-500"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">Nộp bài?</h3>
+                <p class="text-gray-500 text-sm mt-1" id="modal-unanswered">Bạn còn 0 câu chưa trả lời</p>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeSubmitModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all">
+                    Làm tiếp
+                </button>
+                <button onclick="submitExam()" class="flex-1 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all">
+                    Nộp bài
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+<script src="https://deepsite.hf.co/deepsite-badge.js"></script>
+</body>
+</html>
