@@ -146,6 +146,27 @@
         }
     </style>
 </head>
+    <script>
+    // Hàm này phải nằm riêng để không bị ảnh hưởng bởi lỗi của các file khác
+    function showPage(pageId) {
+        console.log("Đang chuyển trang sang:", pageId);
+        
+        // Ẩn tất cả các trang
+        const pages = document.querySelectorAll('.page');
+        pages.forEach(p => p.style.display = 'none');
+
+        // Hiện trang mong muốn
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+            targetPage.style.display = 'block';
+        } else {
+            console.error("Không tìm thấy trang có ID: " + pageId);
+        }
+    }
+</script>
+
+<script src="script.js"></script>
+</body>
 <body class="bg-gray-50 min-h-screen font-inter">
 
     <!-- Toast -->
