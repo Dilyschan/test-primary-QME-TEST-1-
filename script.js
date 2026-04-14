@@ -1,21 +1,7 @@
 // =====================================================
 // ENGLISH PLACEMENT TEST - CAMBRIDGE PRIMARY
 // =====================================================
-// ===== PAGE NAVIGATION =====
-function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
-    });
-    const page = document.getElementById(pageId);
-    if (page) {
-        // Small delay for animation
-        setTimeout(() => {
-            page.classList.add('active');
-            window.scrollTo(0, 0);
-        }, 100);
-    }
-    lucide.createIcons();
-}
+
 // ===== EXAM DATA =====
 const examData = {
     part1: {
@@ -134,7 +120,21 @@ function showToast(msg, type = 'success') {
         toast.classList.remove('show');
     }, 3000);
 }
-
+// ===== PAGE NAVIGATION =====
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+    });
+    const page = document.getElementById(pageId);
+    if (page) {
+        // Small delay for animation
+        setTimeout(() => {
+            page.classList.add('active');
+            window.scrollTo(0, 0);
+        }, 100);
+    }
+    lucide.createIcons();
+}
 // ===== INFO FORM =====
 document.addEventListener('DOMContentLoaded', () => {
     lucide.createIcons();
