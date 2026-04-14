@@ -4,22 +4,82 @@
 
 // ===== EXAM DATA =====
 const examData = {
-    part1: {
-        title: "Part 1: Vocabulary – Look & Choose",
-        description: "Look at the picture and choose the correct word.",
-        questions: [
-            { id: 1, image: "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_640.jpg", question: "What is this?", options: ["A cat", "A dog", "A bird", "A fish"], correct: 0 },
-            { id: 2, image: "https://cdn.pixabay.com/photo/2015/11/19/21/10/knowledge-1052010_640.jpg", question: "What is this?", options: ["A pen", "A book", "A ruler", "A bag"], correct: 1 },
-            { id: 3, image: "https://cdn.pixabay.com/photo/2016/01/05/13/58/apple-1122537_640.jpg", question: "What fruit is this?", options: ["A banana", "A mango", "An apple", "A grape"], correct: 2 },
-            { id: 4, image: "https://cdn.pixabay.com/photo/2016/11/18/13/46/child-1834645_640.jpg", question: "What is the boy doing?", options: ["Running", "Swimming", "Jumping", "Sleeping"], correct: 1 },
-            { id: 5, image: "https://cdn.pixabay.com/photo/2016/11/18/12/51/car-1834279_640.jpg", question: "What color is the car?", options: ["Blue", "Green", "Yellow", "Red"], correct: 3 },
-            { id: 6, image: "https://cdn.pixabay.com/photo/2017/08/02/01/01/living-room-2569325_640.jpg", question: "What is this?", options: ["A table", "A chair", "A desk", "A sofa"], correct: 1 },
-            { id: 7, image: "https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_640.jpg", question: "What is the weather like?", options: ["Sunny", "Rainy", "Cloudy", "Snowy"], correct: 0 },
-            { id: 8, image: "https://images.pexels.com/photos/1055691/pexels-photo-1055691.jpeg?w=400", question: "What is she wearing?", options: ["A dress", "A shirt", "A coat", "A hat"], correct: 0 },
-            { id: 9, image: "https://cdn.pixabay.com/photo/2017/10/25/11/24/giraffe-2887644_640.jpg", question: "What animal is this?", options: ["A tiger", "A lion", "An elephant", "A giraffe"], correct: 3 },
-            { id: 10, image: "https://cdn.pixabay.com/photo/2015/09/04/10/37/school-921860_640.jpg", question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 }
-        ]
-   },
+    const part1 = {
+  title: "Part 1: Vocabulary – Look & Choose",
+  description: "Look at the picture and choose the correct word.",
+  questions: [
+    {
+      id: 1,
+      image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80",
+      question: "What is this?",
+      options: ["A cat", "A dog", "A bird", "A fish"],
+      correct: 0
+    },
+    {
+      id: 2,
+      image: "https://images.unsplash.com/photo-1544640808-32ca72ac7f67?auto=format&fit=crop&w=400&q=80",
+      question: "What is this?",
+      options: ["A pen", "A book", "A ruler", "A bag"],
+      correct: 1
+    },
+    {
+      id: 3,
+      image: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bcd6?auto=format&fit=crop&w=400&q=80",
+      question: "What fruit is this?",
+      options: ["A banana", "A mango", "An apple", "A grape"],
+      correct: 2
+    },
+    {
+      id: 4,
+      image: "https://images.unsplash.com/photo-1530549387074-d562cb0e50ae?auto=format&fit=crop&w=400&q=80",
+      question: "What is the boy doing?",
+      options: ["Running", "Swimming", "Jumping", "Sleeping"],
+      correct: 1
+    },
+    {
+      id: 5,
+      image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80",
+      question: "What color is the car?",
+      options: ["Blue", "Green", "Yellow", "Red"],
+      correct: 3
+    },
+    {
+      id: 6,
+      image: "https://images.unsplash.com/photo-1503602642458-232111445657?auto=format&fit=crop&w=400&q=80",
+      question: "What is this?",
+      options: ["A table", "A chair", "A desk", "A sofa"],
+      correct: 1
+    },
+    {
+      id: 7,
+      image: "https://images.unsplash.com/photo-1597571063235-4c91e3f66831?auto=format&fit=crop&w=400&q=80",
+      question: "What is the weather like?",
+      options: ["Sunny", "Rainy", "Cloudy", "Snowy"],
+      correct: 0
+    },
+    {
+      id: 8,
+      image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?auto=format&fit=crop&w=400&q=80",
+      question: "What is she wearing?",
+      options: ["A dress", "A shirt", "A coat", "A hat"],
+      correct: 0
+    },
+    {
+      id: 9,
+      image: "https://images.unsplash.com/photo-1547721064-36202633ad1b?auto=format&fit=crop&w=400&q=80",
+      question: "What animal is this?",
+      options: ["A tiger", "A lion", "An elephant", "A giraffe"],
+      correct: 3
+    },
+    {
+      id: 10,
+      image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=400&q=80",
+      question: "Where are the children?",
+      options: ["At school", "At home", "At the park", "At the beach"],
+      correct: 0
+    }
+      ]
+    }, 
     part2: {
         title: "Part 2: Grammar – Choose the Correct Answer",
         description: "Choose the best answer to complete each sentence.",
