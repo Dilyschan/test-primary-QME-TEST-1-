@@ -10,7 +10,7 @@ const examData = {
   questions: [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=400&q=80",
+      image: "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_640.jpg",
       question: "What is this?",
       options: ["A cat", "A dog", "A bird", "A fish"],
       correct: 0
