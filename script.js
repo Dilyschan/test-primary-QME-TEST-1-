@@ -40,7 +40,7 @@ const examData = {
       id: 5,
       image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=400&q=80",
       question: "What color is the car?",
-      options: ["Blue", "Green", "Yellow", "Red"],
+      options: ["Blue", "Green", "Yellow", "white"],
       correct: 3
     },
     {
