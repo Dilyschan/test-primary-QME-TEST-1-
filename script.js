@@ -17,7 +17,7 @@ const examData = {
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1544640808-32ca72ac7f67?auto=format&fit=crop&w=400&q=80",
+      image: "https://https://images.unsplash.com/photo-1476275466078-4007374efbbe?q=80&w=1129&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       question: "What is this?",
       options: ["A pen", "A book", "A ruler", "A bag"],
       correct: 1
