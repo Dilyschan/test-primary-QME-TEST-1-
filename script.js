@@ -98,7 +98,38 @@ const allQuestions = [
 // 3. Paste the doPost function (see comments at bottom of this file)
 // 4. Deploy as Web App (Anyone can access)
 // 5. Copy the URL and paste it below
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzxAvBi72KxSZ7IAeKhA-S3g0c-koTcSZ_xya3D_eoL8KxYI9aibA5xwpbH6bSUsio/exec';
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUsWHXI9bpXU_M7Ku8yZBfM5cjo35Qm2rTyFDvD7-OuPmHayCyfMctI3wRp0mQBvGf/exec";
+
+async function sendDataToGoogleSheet(studentInfo, examResult) {
+    const payload = {
+        parentName: studentInfo.parentName || "",
+        parentPhone: studentInfo.parentPhone || "",
+        studentName: studentInfo.name || "",
+        studentAge: studentInfo.age || "",
+        studentClass: studentInfo.class || "",
+        score: examResult.score || 0,
+        totalQuestions: examResult.total || 0,
+        percentage: ((examResult.score / examResult.total) * 100).toFixed(0) + "%",
+        level: examResult.level || "",
+        timeUsed: examResult.timeUsed || "",
+        partScores: examResult.partScores.join(", "), 
+        answers: JSON.stringify(examResult.userAnswers)
+    };
+
+    try {
+        await fetch(GOOGLE_SHEET_URL, {
+            method: "POST",
+            mode: "no-cors", // Bắt buộc phải có để không bị lỗi CORS
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload)
+        });
+        console.log("Đã gửi yêu cầu lưu dữ liệu!");
+    } catch (error) {
+        console.error("Lỗi kết nối:", error);
+    }
+}
 
 // ===== PAGE NAVIGATION =====
 function showPage(pageId) {
