@@ -4,7 +4,7 @@
 
 // ===== EXAM DATA =====
 const examData = {
-  part1: {
+    part1: {
         title: "Part 1: Vocabulary – Look & Choose",
         description: "Look at the picture and choose the correct word.",
         questions: [
