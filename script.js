@@ -3,7 +3,7 @@
 // =====================================================
 
 // ===== CONFIGURATION =====
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwUsWHXI9bpXU_M7Ku8yZBfM5cjo35Qm2rTyFDvD7-OuPmHayCyfMctI3wRp0mQBvGf/exec';
+const GOOGLE_SHEET_URL = 'AKfycbxKuDonrTIZiKtmxDiowX3EGpM04ZEfETtNZ5vZsu_4ltXXRUkHuft3SWA_TeqEHA2b';
 
 // ===== EXAM DATA =====
 const examData = {
