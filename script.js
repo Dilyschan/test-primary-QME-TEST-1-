@@ -4,22 +4,82 @@
 
 // ===== EXAM DATA =====
 const examData = {
-    part1: {
-        title: "Part 1: Vocabulary – Look & Choose",
-        description: "Look at the picture and choose the correct word.",
-        questions: [
-            { id: 1, image: "http://static.photos/nature/320x240/10", question: "What is this?", options: ["A cat", "A dog", "A bird", "A fish"], correct: 0 },
-            { id: 2, image: "http://static.photos/education/320x240/20", question: "What is this?", options: ["A pen", "A book", "A ruler", "A bag"], correct: 1 },
-            { id: 3, image: "http://static.photos/food/320x240/30", question: "What fruit is this?", options: ["A banana", "A mango", "An apple", "A grape"], correct: 2 },
-            { id: 4, image: "http://static.photos/people/320x240/40", question: "What is the boy doing?", options: ["Running", "Swimming", "Jumping", "Sleeping"], correct: 1 },
-            { id: 5, image: "http://static.photos/red/320x240/50", question: "What color is the car?", options: ["Blue", "Green", "Yellow", "Red"], correct: 3 },
-            { id: 6, image: "http://static.photos/office/320x240/60", question: "What is this?", options: ["A table", "A chair", "A desk", "A sofa"], correct: 1 },
-            { id: 7, image: "http://static.photos/nature/320x240/70", question: "What is the weather like?", options: ["Sunny", "Rainy", "Cloudy", "Snowy"], correct: 0 },
-            { id: 8, image: "http://static.photos/people/320x240/80", question: "What is she wearing?", options: ["A dress", "A shirt", "A coat", "A hat"], correct: 0 },
-            { id: 9, image: "http://static.photos/nature/320x240/90", question: "What animal is this?", options: ["A tiger", "A lion", "An elephant", "A giraffe"], correct: 3 },
-            { id: 10, image: "http://static.photos/education/320x240/100", question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 }
-        ]
-    },
+  const part1 = {
+    title: "Part 1: Vocabulary – Look & Choose",
+    description: "Look at the picture and choose the correct word.",
+    questions: [
+        { 
+            id: 1, 
+            image: "https://placehold.co/320x240?text=Cat", 
+            question: "What is this?", 
+            options: ["A cat", "A dog", "A bird", "A fish"], 
+            correct: 0 
+        },
+        { 
+            id: 2, 
+            image: "https://placehold.co/320x240?text=Book", 
+            question: "What is this?", 
+            options: ["A pen", "A book", "A ruler", "A bag"], 
+            correct: 1 
+        },
+        { 
+            id: 3, 
+            image: "https://placehold.co/320x240?text=Apple", 
+            question: "What fruit is this?", 
+            options: ["A banana", "A mango", "An apple", "A grape"], 
+            correct: 2 
+        },
+        { 
+            id: 4, 
+            image: "https://placehold.co/320x240?text=Swimming", 
+            question: "What is the boy doing?", 
+            options: ["Running", "Swimming", "Jumping", "Sleeping"], 
+            correct: 1 
+        },
+        { 
+            id: 5, 
+            image: "https://placehold.co/320x240?text=Red+Car", 
+            question: "What color is the car?", 
+            options: ["Blue", "Green", "Yellow", "Red"], 
+            correct: 3 
+        },
+        { 
+            id: 6, 
+            image: "https://placehold.co/320x240?text=Chair", 
+            question: "What is this?", 
+            options: ["A table", "A chair", "A desk", "A sofa"], 
+            correct: 1 
+        },
+        { 
+            id: 7, 
+            image: "https://placehold.co/320x240?text=Sunny+Weather", 
+            question: "What is the weather like?", 
+            options: ["Sunny", "Rainy", "Cloudy", "Snowy"], 
+            correct: 0 
+        },
+        { 
+            id: 8, 
+            image: "https://placehold.co/320x240?text=Dress", 
+            question: "What is she wearing?", 
+            options: ["A dress", "A shirt", "A coat", "A hat"], 
+            correct: 0 
+        },
+        { 
+            id: 9, 
+            image: "https://placehold.co/320x240?text=Giraffe", 
+            question: "What animal is this?", 
+            options: ["A tiger", "A lion", "An elephant", "A giraffe"], 
+            correct: 3 
+        },
+        { 
+            id: 10, 
+            image: "https://placehold.co/320x240?text=School", 
+            question: "Where are the children?", 
+            options: ["At school", "At home", "At the park", "At the beach"], 
+            correct: 0 
+        }
+    ]
+};
     part2: {
         title: "Part 2: Grammar – Choose the Correct Answer",
         description: "Choose the best answer to complete each sentence.",
