@@ -98,7 +98,7 @@ const allQuestions = [
 // 3. Paste the doPost function (see comments at bottom of this file)
 // 4. Deploy as Web App (Anyone can access)
 // 5. Copy the URL and paste it below
-const GOOGLE_SHEET_URL = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzj6LZz7KAM57f9xb77cZnUtrEbBznDefCJGHwTGw63zsoxY1RU1SRF4mE2f7af3LXB/exec';
 
 // ===== PAGE NAVIGATION =====
 function showPage(pageId) {
