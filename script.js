@@ -20,7 +20,7 @@ const examData = {
             { id: 2, image: photoFiles[1], question: "What is this?", options: ["A pen", "A book", "A ruler", "A bag"], correct: 1 },
             { id: 3, image: photoFiles[2], question: "What fruit is this?", options: ["A banana", "A mango", "An apple", "A grape"], correct: 2 },
             { id: 4, image: photoFiles[3], question: "What is the boy doing?", options: ["Running", "Swimming", "Jumping", "Sleeping"], correct: 1 },
-            { id: 5, image: photoFiles[4], question: "What color is the car?", options: ["Blue", "Green", "Yellow", "White"], correct: 3 },
+            { id: 5, image: photoFiles[4], question: "What color is the car?", options: ["Blue", "Green", "Yellow", "red"], correct: 3 },
             { id: 6, image: photoFiles[5], question: "What is this?", options: ["A table", "A chair", "A desk", "A sofa"], correct: 1 },
             { id: 7, image: photoFiles[6], question: "What is the weather like?", options: ["Sunny", "Rainy", "Cloudy", "Snowy"], correct: 0 },
             { id: 8, image: photoFiles[7], question: "What is she wearing?", options: ["A dress", "A shirt", "A coat", "A hat"], correct: 0 },
