@@ -19,6 +19,7 @@ const examData = {
             { id: 9, image: "https://images.unsplash.com/photo-1547721064-36202633ad1b?w=400", question: "What animal is this?", options: ["A tiger", "A lion", "An elephant", "A giraffe"], correct: 3 },
             { id: 10, image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400", question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 }
         ]
+      },     
     part2: {
         title: "Part 2: Grammar – Choose the Correct Answer",
         description: "Choose the best answer to complete each sentence.",
