@@ -1,7 +1,18 @@
 // =====================================================
 // ENGLISH PLACEMENT TEST - CAMBRIDGE PRIMARY
 // =====================================================
-
+const photoFiles = [
+    'image1.jpeg', // Cho câu 1 (Con mèo)
+    'image2.jpeg', // Cho câu 2 (Cuốn sách)
+    'image3.jpeg', // Cho câu 3 (Quả táo)
+    'image4.jpeg', // Cho câu 4 (Thằng nhỏ bơi)
+    'image5.jpeg', // Cho câu 5 (Xe hơi đỏ)
+    'image6.jpeg', // Cho câu 6 (Cái ghế)
+    'image7.jpeg', // Cho câu 7 (Trời nắng)
+    'image8.jpeg', // Cho câu 8 (Cái váy)
+    'image9.jpeg', // Cho câu 9 (Hươu cao cổ)
+    'image10.jpeg' // Cho câu 10 (Trường học)
+];
 // ===== EXAM DATA =====
 const examData = {
     const part1 = {
@@ -10,7 +21,7 @@ const examData = {
   questions: [
     {
       id: 1,
-      image: "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_640.jpg",
+      image: 'image1.jpeg',
       question: "What is this?",
       options: ["A cat", "A dog", "A bird", "A fish"],
       correct: 0
