@@ -17,7 +17,7 @@ const examData = {
             { id: 7, image: "https://images.unsplash.com/photo-1597571063235-4c91e3f66831?w=400", question: "What is the weather like?", options: ["Sunny", "Rainy", "Cloudy", "Snowy"], correct: 0 },
             { id: 8, image: "https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=400", question: "What is she wearing?", options: ["A dress", "A shirt", "A coat", "A hat"], correct: 0 },
             { id: 9, image: "https://images.unsplash.com/photo-1547721064-36202633ad1b?w=400", question: "What animal is this?", options: ["A tiger", "A lion", "An elephant", "A giraffe"], correct: 3 },
-            { id: 10, image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400", question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 }
+            { id: 10, image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400", question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 },
         ]
       },     
     part2: {
@@ -33,7 +33,7 @@ const examData = {
             { id: 17, question: "This is ___ apple.", options: ["a", "an", "the", "some"], correct: 1 },
             { id: 18, question: "They ___ playing football yesterday.", options: ["was", "were", "are", "is"], correct: 1 },
             { id: 19, question: "___ many students are there in your class?", options: ["What", "How", "Where", "When"], correct: 1 },
-            { id: 20, question: "I like ___ to music.", options: ["listen", "listening", "listens", "listened"], correct: 1 }
+            { id: 20, question: "I like ___ to music.", options: ["listen", "listening", "listens", "listened"], correct: 1 },
         ]
     },
     part3: {
@@ -45,7 +45,7 @@ const examData = {
             { id: 22, question: "Who is Tom?", options: ["Lily's friend", "Lily's brother", "Lily's father", "Lily's cousin"], correct: 1 },
             { id: 23, question: "What is Lily's favorite subject?", options: ["Math", "Art", "English", "Science"], correct: 2 },
             { id: 24, question: "Where does Lily usually play after school?", options: ["At home", "At school", "In the park", "At the supermarket"], correct: 2 },
-            { id: 25, question: "When does Lily's family go to the supermarket?", options: ["Every morning", "On weekdays", "After school", "On weekends"], correct: 3 }
+            { id: 25, question: "When does Lily's family go to the supermarket?", options: ["Every morning", "On weekdays", "After school", "On weekends"], correct: 3 },
         ]
     },
     part4: {
@@ -56,7 +56,7 @@ const examData = {
             { id: 27, question: '"Hungry" means:', options: ["Want to sleep", "Want to eat", "Want to drink", "Want to play"], correct: 1 },
             { id: 28, question: '"Brave" means:', options: ["Scared of everything", "Not afraid of danger", "Very quiet", "Very funny"], correct: 1 },
             { id: 29, question: '"Delicious" means:', options: ["Very bad", "Very cold", "Very tasty", "Very long"], correct: 2 },
-            { id: 30, question: '"Explore" means:', options: ["To stay at home", "To travel and discover new places", "To sleep", "To eat quickly"], correct: 1 }
+            { id: 30, question: '"Explore" means:', options: ["To stay at home", "To travel and discover new places", "To sleep", "To eat quickly"], correct: 1 },
         ]
     },
     part5: {
@@ -67,7 +67,7 @@ const examData = {
             { id: 32, question: "The book is ___ the table.", options: ["in", "on", "under", "behind"], correct: 1 },
             { id: 33, question: "She ___ TV every evening.", options: ["watch", "watches", "watching", "watched"], correct: 1 },
             { id: 34, question: "___ there any milk in the fridge?", options: ["Is", "Are", "Do", "Does"], correct: 0 },
-            { id: 35, question: "I ___ born in 2016.", options: ["am", "is", "was", "were"], correct: 2 }
+            { id: 35, question: "I ___ born in 2016.", options: ["am", "is", "was", "were"], correct: 2 },
         ]
     }
 };
@@ -87,7 +87,7 @@ const allQuestions = [
     ...examData.part2.questions,
     ...examData.part3.questions,
     ...examData.part4.questions,
-    ...examData.part5.questions
+    ...examData.part5.questions,
 ];
 
 // ===== GOOGLE SHEETS CONFIG =====
