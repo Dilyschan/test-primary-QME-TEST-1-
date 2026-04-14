@@ -3,18 +3,6 @@
 // =====================================================
 // 2. Khai báo mảng tên file ảnh (đã đổi sang JPEG như bạn muốn)
 // 1. LUÔN ĐỂ HÀM NÀY LÊN ĐẦU TIÊN
-function showPage(pageId) {
-    console.log("Đang chuyển sang trang:", pageId);
-    const pages = document.querySelectorAll('.page');
-    pages.forEach(p => p.style.display = 'none');
-
-    const target = document.getElementById(pageId);
-    if (target) {
-        target.style.display = 'block';
-    } else {
-        console.error("Không tìm thấy trang có ID là: " + pageId);
-    }
-}
 
 // 2. KHAI BÁO MẢNG ẢNH (Dùng cho image1.jpeg đến image10.jpeg)
 const photoFiles = [
