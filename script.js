@@ -2,12 +2,27 @@
 // ENGLISH PLACEMENT TEST - CAMBRIDGE PRIMARY
 // =====================================================
 // 2. Khai báo mảng tên file ảnh (đã đổi sang JPEG như bạn muốn)
+// 1. LUÔN ĐỂ HÀM NÀY LÊN ĐẦU TIÊN
+function showPage(pageId) {
+    console.log("Đang chuyển sang trang:", pageId);
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(p => p.style.display = 'none');
+
+    const target = document.getElementById(pageId);
+    if (target) {
+        target.style.display = 'block';
+    } else {
+        console.error("Không tìm thấy trang có ID là: " + pageId);
+    }
+}
+
+// 2. KHAI BÁO MẢNG ẢNH (Dùng cho image1.jpeg đến image10.jpeg)
 const photoFiles = [
     'image1.jpeg', 'image2.jpeg', 'image3.jpeg', 'image4.jpeg', 'image5.jpeg',
     'image6.jpeg', 'image7.jpeg', 'image8.jpeg', 'image9.jpeg', 'image10.jpeg'
 ];
 
-// 3. Dữ liệu bài thi
+// 3. DỮ LIỆU BÀI THI (Đã sửa cú pháp chuẩn)
 const examData = {
     part1: {
         title: "Part 1: Vocabulary – Look & Choose",
@@ -24,7 +39,7 @@ const examData = {
             { id: 9, image: photoFiles[8], question: "What animal is this?", options: ["A tiger", "A lion", "An elephant", "A giraffe"], correct: 3 },
             { id: 10, image: photoFiles[9], question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 }
         ]
-    },
+},
     part2: {
         title: "Part 2: Grammar – Choose the Correct Answer",
         description: "Choose the best answer to complete each sentence.",
