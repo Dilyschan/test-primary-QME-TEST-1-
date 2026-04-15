@@ -486,50 +486,19 @@
             </div>
 
             <!-- Actions -->
+     <!-- Actions -->
             <div class="flex flex-col gap-3">
-    <button id="btn-gift" onclick="
-        (function(){
-            // Lấy phần trăm điểm từ giao diện (ID 'score-percentage' thường dùng trong bài test)
-            const pctText = document.getElementById('score-percentage') ? document.getElementById('score-percentage').textContent : '0';
-            const pct = parseInt(pctText);
-            let gift = '';
-
-            if (pct < 50) {
-                const gifts = ['Bộ sổ tay ngữ pháp Tiếng Anh tiểu học', 'Bộ đề ôn tập tiếng anh tăng cường'];
-                gift = gifts[Math.floor(Math.random() * gifts.length)];
-            } else if (pct >= 50 && pct < 90) {
-                gift = '1 buổi học thử với Giáo viên nước ngoài tại trung tâm';
-            } else {
-                gift = '1 buổi học thử với Giáo viên nước ngoài tại trung tâm VÀ 1 phần quà đặc biệt';
-            }
-
-            alert('Chúc mừng! Phần quà của bạn là:\n🎁 ' + gift + '\n\nHãy nhấn nút Liên hệ để nhận quà ngay nhé!');
-            
-            const btn = document.getElementById('btn-gift');
-            btn.innerHTML = '🎁 Đã nhận: ' + gift;
-            btn.disabled = true;
-            btn.style.backgroundColor = '#e5e7eb'; // Màu xám khi đã nhận
-            btn.style.color = '#6b7280';
-            btn.style.cursor = 'default';
-        })()
-    " class="w-full py-4 bg-yellow-400 text-yellow-900 font-bold rounded-xl hover:bg-yellow-500 transition-all flex items-center justify-center gap-2 shadow-lg" style="animation: pulse 2s infinite;">
-        <i data-lucide="gift" class="w-5 h-5"></i>
-        NHẬN QUÀ NGẪU NHIÊN
-    </button>
-
-    <button onclick="window.open('https://zalo.me/SỐ_ĐIỆN_THOẠI_CỦA_BẠN', '_blank')" class="w-full py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
-        <i data-lucide="message-circle" class="w-4 h-4"></i>
-        Liên hệ với trung tâm
-    </button>
-</div>
-
-<style>
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-        100% { transform: scale(1); }
-    }
-</style>
+                <button onclick="window.print()" class="w-full py-3 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="printer" class="w-4 h-4"></i>
+                    In kết quả
+                </button>
+                <button onclick="location.reload()" class="w-full py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                    Làm lại bài
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ===================== SUBMIT CONFIRM MODAL ===================== -->
    <div id="modal-submit" class="fixed inset-0 z-[999] items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display:none;">
