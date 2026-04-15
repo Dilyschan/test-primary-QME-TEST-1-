@@ -486,7 +486,6 @@
             </div>
 
             <!-- Actions -->
-     <!-- Actions -->
             <div class="flex flex-col gap-3">
                 <button onclick="window.print()" class="w-full py-3 bg-white border-2 border-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-all flex items-center justify-center gap-2">
                     <i data-lucide="printer" class="w-4 h-4"></i>
@@ -501,26 +500,26 @@
     </div>
 
     <!-- ===================== SUBMIT CONFIRM MODAL ===================== -->
-   <div id="modal-submit" class="fixed inset-0 z-[999] items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display:none;">
-    <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-        <div class="text-center mb-4">
-            <div class="inline-flex items-center justify-center w-14 h-14 bg-accent-100 rounded-2xl mb-3">
-                <i data-lucide="alert-triangle" class="w-7 h-7 text-accent-500"></i>
+    <div id="modal-submit" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display:none;">
+        <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <div class="text-center mb-4">
+                <div class="inline-flex items-center justify-center w-14 h-14 bg-accent-100 rounded-2xl mb-3">
+                    <i data-lucide="alert-triangle" class="w-7 h-7 text-accent-500"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">Nộp bài?</h3>
+                <p class="text-gray-500 text-sm mt-1" id="modal-unanswered">Bạn còn 0 câu chưa trả lời</p>
             </div>
-            <h3 class="text-xl font-bold text-gray-800">Nộp bài?</h3>
-            <p class="text-gray-500 text-sm mt-1" id="modal-unanswered">Bạn đã sẵn sàng nộp bài thi chưa?</p>
-        </div>
-        <div class="flex gap-3">
-            <button onclick="document.getElementById('modal-submit').style.display='none'" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all">
-                Làm tiếp
-            </button>
-            
-            <button onclick="if(window.submitExam) submitExam(); if(window.submitQuiz) submitQuiz();" class="flex-1 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all">
-                Nộp bài
-            </button>
+            <div class="flex gap-3">
+                <button onclick="closeSubmitModal()" class="flex-1 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl hover:bg-gray-200 transition-all">
+                    Làm tiếp
+                </button>
+                <button onclick="submitExam()" class="flex-1 py-3 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-all">
+                    Nộp bài
+                </button>
+            </div>
         </div>
     </div>
-</div>
+
     <script src="script.js"></script>
 <script src="https://deepsite.hf.co/deepsite-badge.js"></script>
 </body>
