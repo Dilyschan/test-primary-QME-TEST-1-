@@ -655,7 +655,7 @@ function createConfetti() {
 // ===== SEND TO GOOGLE SHEET =====
 function sendToSheet(data) {
     // If URL not configured, save locally
-    if (GOOGLE_SHEET_URL === 'https://script.google.com/macros/s/AKfycbzj6LZz7KAM57f9xb77cZnUtrEbBznDefCJGHwTGw63zsoxY1RU1SRF4mE2f7af3LXB/exec') {
+    if (GOOGLE_SHEET_URL ='https://script.google.com/macros/s/AKfycbzj6LZz7KAM57f9xb77cZnUtrEbBznDefCJGHwTGw63zsoxY1RU1SRF4mE2f7af3LXB/exec') {
         console.log('📊 Data to send to Google Sheet:', data);
         // Save to localStorage as fallback
         const existingData = JSON.parse(localStorage.getItem('examResults') || '[]');
