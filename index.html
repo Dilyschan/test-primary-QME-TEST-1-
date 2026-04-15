@@ -430,7 +430,7 @@
                     Câu trước
                 </button>
                 <span class="text-sm text-gray-500 font-medium" id="question-counter">1 / 35</span>
-                <button id="btn-next" onclick="submitQuiz(_)"
+                <button id="btn-next" onclick="navigateQuestion(1)"
                     class="flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-all">
                     Câu sau
                     <i data-lucide="chevron-right" class="w-4 h-4"></i>
@@ -532,7 +532,7 @@
 </style>
 
     <!-- ===================== SUBMIT CONFIRM MODAL ===================== -->
-    <div id="modal-submit" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display:none;">
+    <div id="modal-submit" class="fixed inset-0 z-[999] items-center justify-center bg-black/50 backdrop-blur-sm p-4" style="display:none;">
         <div class="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
             <div class="text-center mb-4">
                 <div class="inline-flex items-center justify-center w-14 h-14 bg-accent-100 rounded-2xl mb-3">
