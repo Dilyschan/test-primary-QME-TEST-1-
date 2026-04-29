@@ -1,16 +1,14 @@
 // =====================================================
 // ENGLISH PLACEMENT TEST - CAMBRIDGE PRIMARY
 // =====================================================
-// 2. Khai báo mảng tên file ảnh (đã đổi sang JPEG như bạn muốn)
-// 1. LUÔN ĐỂ HÀM NÀY LÊN ĐẦU TIÊN
 
-// 2. KHAI BÁO MẢNG ẢNH (Dùng cho image1.jpeg đến image10.jpeg)
+// 1. KHAI BÁO MẢNG ẢNH
 const photoFiles = [
     'image1.jpeg', 'image2.jpeg', 'image3.jpeg', 'image4.jpeg', 'image5.jpeg',
     'image6.jpeg', 'image7.jpeg', 'image8.jpeg', 'image9.jpeg', 'image10.jpeg'
 ];
 
-// 3. DỮ LIỆU BÀI THI (Đã sửa cú pháp chuẩn)
+// 2. DỮ LIỆU BÀI THI
 const examData = {
     part1: {
         title: "Part 1: Vocabulary – Look & Choose",
@@ -27,7 +25,7 @@ const examData = {
             { id: 9, image: photoFiles[8], question: "What animal is this?", options: ["A tiger", "A lion", "An elephant", "A giraffe"], correct: 3 },
             { id: 10, image: photoFiles[9], question: "Where are the children?", options: ["At school", "At home", "At the park", "At the beach"], correct: 0 }
         ]
-},
+    },
     part2: {
         title: "Part 2: Grammar – Choose the Correct Answer",
         description: "Choose the best answer to complete each sentence.",
@@ -80,16 +78,15 @@ const examData = {
     }
 };
 
-// ===== STATE =====
+// ===== STATE (TRẠNG THÁI) =====
 let currentQuestion = 0;
 let answers = {};
 let studentInfo = {};
 let timerInterval = null;
-let timeRemaining = 40 * 60; // 40 minutes in seconds
+let timeRemaining = 40 * 60; 
 let examStarted = false;
 let examSubmitted = false;
 
-// All questions flat
 const allQuestions = [
     ...examData.part1.questions,
     ...examData.part2.questions,
@@ -98,60 +95,39 @@ const allQuestions = [
     ...examData.part5.questions,
 ];
 
-// ===== GOOGLE SHEETS CONFIG =====
-// ⚠️ IMPORTANT: Replace this URL with your Google Apps Script Web App URL
-// Follow these steps to set up:
-// 1. Create a Google Sheet with columns: timestamp, parentName, parentPhone, studentName, studentAge, studentClass, score, totalQuestions, level, answers
-// 2. Go to Extensions > Apps Script
-// 3. Paste the doPost function (see comments at bottom of this file)
-// 4. Deploy as Web App (Anyone can access)
-// 5. Copy the URL and paste it below
+// 3. GOOGLE SHEETS CONFIG 
 const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyP9EC5AonkB_vhsW4q3ZAWHRNtU3yawAdu8NVeywK5WAZIZSbIIN8hKfpADb-dt4sC/exec';
 
-
-
-// ===== TOAST =====
+// ===== TOAST THÔNG BÁO =====
 function showToast(msg, type = 'success') {
     const toast = document.getElementById('toast');
     const toastMsg = document.getElementById('toast-msg');
+    if (!toast || !toastMsg) return;
     toastMsg.textContent = msg;
-    
-    if (type === 'error') {
-        toast.className = 'toast bg-red-50 text-red-700 flex items-center gap-3 border border-red-200 show';
-    } else if (type === 'warning') {
-        toast.className = 'toast bg-amber-50 text-amber-700 flex items-center gap-3 border border-amber-200 show';
-    } else {
-        toast.className = 'toast bg-white text-gray-800 flex items-center gap-3 border border-gray-200 show';
-    }
-
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
+    toast.className = `toast flex items-center gap-3 border show ${type === 'error' ? 'bg-red-50 text-red-700 border-red-200' : type === 'warning' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-white text-gray-800 border-gray-200'}`;
+    setTimeout(() => toast.classList.remove('show'), 3000);
 }
-// ===== PAGE NAVIGATION =====
+
+// ===== CHUYỂN TRANG =====
 function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => {
-        p.classList.remove('active');
-    });
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     const page = document.getElementById(pageId);
     if (page) {
-        // Small delay for animation
         setTimeout(() => {
             page.classList.add('active');
             window.scrollTo(0, 0);
         }, 100);
     }
-    lucide.createIcons();
+    if (window.lucide) lucide.createIcons();
 }
-// ===== INFO FORM =====
-document.addEventListener('DOMContentLoaded', () => {
-    lucide.createIcons();
 
+// ===== XỬ LÝ FORM ĐĂNG KÝ =====
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.lucide) lucide.createIcons();
     const form = document.getElementById('info-form');
     if (form) {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
-            
             const parentName = document.getElementById('parent-name').value.trim();
             const parentPhone = document.getElementById('parent-phone').value.trim();
             const studentName = document.getElementById('student-name').value.trim();
@@ -163,15 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Validate phone
             const phoneRegex = /^[0-9+\s]{9,12}$/;
             if (!phoneRegex.test(parentPhone.replace(/\s/g, ''))) {
-                document.getElementById('form-error').classList.remove('hidden');
-                document.getElementById('form-error').querySelector('span').textContent = 'Số điện thoại không hợp lệ!';
+                const err = document.getElementById('form-error');
+                err.classList.remove('hidden');
+                err.querySelector('span').textContent = 'Số điện thoại không hợp lệ!';
                 return;
             }
-
-            document.getElementById('form-error').classList.add('hidden');
 
             studentInfo = {
                 parentName,
@@ -182,42 +156,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 timestamp: new Date().toLocaleString('vi-VN')
             };
 
-            // Update exam header
             document.getElementById('exam-student-name').textContent = studentName;
             document.getElementById('exam-student-class').textContent = `${studentClass} • ${studentAge} tuổi`;
 
-            // Send info to Google Sheet
-            sendToSheet(studentInfo);
-
-            // Start exam
+            // CHUYỂN TRANG TRƯỚC ĐỂ TRÁNH ĐỨNG MÁY
             showPage('page-exam');
             startTimer();
             buildNavDots();
             renderQuestion();
             examStarted = true;
+
+            // GỬI DỮ LIỆU CHẠY NGẦM
+            sendToSheet(studentInfo);
         });
     }
 });
 
-// ===== TIMER =====
+// ===== ĐỒNG HỒ =====
 function startTimer() {
     updateTimerDisplay();
     timerInterval = setInterval(() => {
         timeRemaining--;
         if (timeRemaining <= 0) {
             clearInterval(timerInterval);
-            timeRemaining = 0;
             submitExam();
             showToast('Hết thời gian làm bài!', 'warning');
         }
         updateTimerDisplay();
-        
-        // Warning when < 5 min
-        if (timeRemaining <= 300 && timeRemaining > 0) {
-            document.getElementById('timer-display').classList.add('timer-warning');
-            document.getElementById('timer').classList.remove('text-gray-800');
-            document.getElementById('timer').classList.add('text-danger-600');
-        }
     }, 1000);
 }
 
@@ -228,28 +193,15 @@ function updateTimerDisplay() {
     if (timerEl) timerEl.textContent = `${min}:${sec}`;
 }
 
-// ===== NAV DOTS =====
+// ===== ĐIỀU HƯỚNG CÂU HỎI =====
 function buildNavDots() {
     const container = document.getElementById('nav-dots');
+    if (!container) return;
     container.innerHTML = '';
-    allQuestions.forEach((q, i) => {
-        const partNum = getPartNumber(i);
-        const colors = {
-            1: 'bg-blue-400',
-            2: 'bg-green-400',
-            3: 'bg-purple-400',
-            4: 'bg-orange-400',
-            5: 'bg-pink-400'
-        };
+    allQuestions.forEach((_, i) => {
         const dot = document.createElement('button');
-        dot.className = `nav-dot w-2.5 h-2.5 rounded-full ${colors[partNum]} opacity-50 hover:opacity-100 transition-all flex-shrink-0`;
-        dot.title = `Câu ${i + 1}`;
-        dot.onclick = () => {
-            currentQuestion = i;
-            renderQuestion();
-            updateNavDots();
-        };
         dot.id = `nav-dot-${i}`;
+        dot.onclick = () => { currentQuestion = i; renderQuestion(); };
         container.appendChild(dot);
     });
     updateNavDots();
@@ -259,504 +211,141 @@ function updateNavDots() {
     allQuestions.forEach((_, i) => {
         const dot = document.getElementById(`nav-dot-${i}`);
         if (!dot) return;
-        
+        const partNum = getPartNumber(i);
+        const colors = { 1: 'bg-blue-400', 2: 'bg-green-400', 3: 'bg-purple-400', 4: 'bg-orange-400', 5: 'bg-pink-400' };
         const isActive = i === currentQuestion;
         const isAnswered = answers[i] !== undefined;
-        
-        dot.className = `nav-dot rounded-full transition-all flex-shrink-0 ${
-            isActive ? 'w-6 h-2.5 opacity-100 ring-2 ring-offset-1' : 'w-2.5 h-2.5'
-        } ${
-            isAnswered ? 'opacity-100' : 'opacity-50'
-        }`;
-
-        if (isActive) {
-            const partNum = getPartNumber(i);
-            const ringColors = { 1: 'ring-blue-400', 2: 'ring-green-400', 3: 'ring-purple-400', 4: 'ring-orange-400', 5: 'ring-pink-400' };
-            dot.className += ` ${ringColors[partNum]}`;
-        }
+        dot.className = `nav-dot rounded-full transition-all flex-shrink-0 ${colors[partNum]} ${isActive ? 'w-6 h-2.5 opacity-100 ring-2 ring-offset-1' : 'w-2.5 h-2.5'} ${isAnswered ? 'opacity-100' : 'opacity-40'}`;
     });
 }
 
-function getPartNumber(questionIndex) {
-    if (questionIndex < 10) return 1;
-    if (questionIndex < 20) return 2;
-    if (questionIndex < 25) return 3;
-    if (questionIndex < 30) return 4;
-    return 5;
+function getPartNumber(idx) {
+    if (idx < 10) return 1; if (idx < 20) return 2; if (idx < 25) return 3; if (idx < 30) return 4; return 5;
 }
 
-// ===== RENDER QUESTION =====
+// ===== HIỂN THỊ CÂU HỎI =====
 function renderQuestion() {
     const container = document.getElementById('exam-content');
     const q = allQuestions[currentQuestion];
     const partNum = getPartNumber(currentQuestion);
-    const partNames = { 1: 'Part 1: Vocabulary', 2: 'Part 2: Grammar', 3: 'Part 3: Reading', 4: 'Part 4: Matching', 5: 'Part 5: Fill in Blanks' };
-    const partColors = {
-        1: { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700', badge: 'bg-blue-100 text-blue-700' },
-        2: { bg: 'bg-green-50', border: 'border-green-200', text: 'text-green-700', badge: 'bg-green-100 text-green-700' },
-        3: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', badge: 'bg-purple-100 text-purple-700' },
-        4: { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700', badge: 'bg-orange-100 text-orange-700' },
-        5: { bg: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-700', badge: 'bg-pink-100 text-pink-700' }
-    };
-
-    const colors = partColors[partNum];
-
-    // Update header
+    
     document.getElementById('current-part-label').textContent = `Part ${partNum}/5`;
-    document.getElementById('current-part-name').textContent = partNames[partNum].split(': ')[1];
-
-    // Update progress
-    const progress = ((currentQuestion + 1) / allQuestions.length) * 100;
-    document.getElementById('progress-bar').style.width = `${progress}%`;
-
-    // Update counter
+    document.getElementById('progress-bar').style.width = `${((currentQuestion + 1) / allQuestions.length) * 100}%`;
     document.getElementById('question-counter').textContent = `${currentQuestion + 1} / ${allQuestions.length}`;
 
-    // Nav buttons
-    document.getElementById('btn-prev').disabled = currentQuestion === 0;
-    const isLast = currentQuestion === allQuestions.length - 1;
     const btnNext = document.getElementById('btn-next');
-    if (isLast) {
+    document.getElementById('btn-prev').disabled = currentQuestion === 0;
+    
+    if (currentQuestion === allQuestions.length - 1) {
         btnNext.innerHTML = 'Nộp bài <i data-lucide="send" class="w-4 h-4"></i>';
         btnNext.onclick = confirmSubmit;
     } else {
         btnNext.innerHTML = 'Câu sau <i data-lucide="chevron-right" class="w-4 h-4"></i>';
-        btnNext.onclick = () => navigateQuestion(1);
+        btnNext.onclick = () => { currentQuestion++; renderQuestion(); };
     }
 
-    // Build question HTML
     let html = '';
-
-    // Part header (only on first question of each part or always show)
-    const partKeys = ['part1', 'part2', 'part3', 'part4', 'part5'];
-    const partStartIndices = [0, 10, 20, 25, 30];
-    const partIndex = partStartIndices.indexOf(currentQuestion);
-    
-    if (partIndex !== -1) {
-        const partKey = partKeys[partIndex];
-        const partData = examData[partKey];
-        html += `
-            <div class="${colors.bg} ${colors.border} border-2 rounded-2xl p-4 mb-6">
-                <div class="flex items-center gap-2 mb-2">
-                    <span class="${colors.badge} text-xs font-bold px-2.5 py-1 rounded-lg">PART ${partNum}</span>
-                    <h3 class="${colors.text} font-bold text-lg">${partData.title}</h3>
-                </div>
-                <p class="${colors.text} text-sm opacity-80">${partData.description}</p>
-            </div>
-        `;
-    }
-
-    // Reading passage for Part 3
+    // Hiển thị phần Reading cho Part 3
     if (currentQuestion >= 20 && currentQuestion <= 24) {
-        if (currentQuestion === 20) {
-            html += `
-                <div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-5 mb-6">
-                    <div class="flex items-start gap-3">
-                        <div class="w-8 h-8 bg-purple-200 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <i data-lucide="book-open" class="w-4 h-4 text-purple-700"></i>
-                        </div>
-                        <div>
-                            <p class="text-purple-700 font-semibold text-sm mb-2">Read the passage carefully:</p>
-                            <p class="text-gray-700 leading-relaxed">${examData.part3.passage}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
+        html += `<div class="bg-purple-50 border-2 border-purple-200 rounded-2xl p-5 mb-6 text-gray-700"><p class="font-bold mb-2">Reading Passage:</p>${examData.part3.passage}</div>`;
     }
 
-    // Question card
-    const qNum = currentQuestion + 1;
-    html += `
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-4">
-            <div class="p-5">
-                <div class="flex items-start gap-3 mb-5">
-                    <span class="bg-gray-100 text-gray-600 text-sm font-bold w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">${qNum}</span>
-                    <h4 class="text-gray-800 font-semibold text-lg leading-relaxed">${q.question}</h4>
-                </div>
-    `;
+    html += `<div class="bg-white rounded-2xl shadow-sm border p-5">
+        <div class="flex gap-3 mb-5"><span class="bg-gray-100 font-bold w-8 h-8 rounded-lg flex items-center justify-center">${currentQuestion + 1}</span><h4 class="font-semibold text-lg">${q.question}</h4></div>`;
+    
+    if (q.image) html += `<div class="flex justify-center mb-5"><img src="${q.image}" class="max-h-64 rounded-lg shadow-sm"></div>`;
 
-    // Image for Part 1
-    if (currentQuestion < 10 && q.image) {
-        html += `
-            <div class="flex justify-center mb-5">
-                <img src="${q.image}" alt="Question ${qNum}" class="question-img" onerror="this.style.display='none'">
-            </div>
-        `;
-    }
-
-    // Options
     html += `<div class="space-y-3">`;
-    q.options.forEach((opt, optIdx) => {
-        const isSelected = answers[currentQuestion] === optIdx;
-        const optLabels = ['A', 'B', 'C', 'D'];
-        html += `
-            <div class="option-card ${isSelected ? 'selected' : ''} rounded-xl px-4 py-3.5 flex items-center gap-3" onclick="selectAnswer(${optIdx})">
-                <div class="option-dot ${isSelected ? '' : ''}">
-                    ${isSelected ? '<div style="width:10px;height:10px;background:white;border-radius:50%;"></div>' : ''}
-                </div>
-                <span class="text-sm font-medium text-gray-500 mr-1">${optLabels[optIdx]}.</span>
-                <span class="text-gray-800 font-medium">${opt}</span>
-            </div>
-        `;
+    q.options.forEach((opt, idx) => {
+        const isSel = answers[currentQuestion] === idx;
+        html += `<div class="option-card ${isSel ? 'selected' : ''} border rounded-xl px-4 py-3 flex items-center gap-3 cursor-pointer" onclick="selectAnswer(${idx})">
+            <div class="w-4 h-4 rounded-full border flex items-center justify-center">${isSel ? '<div class="w-2 h-2 bg-blue-500 rounded-full"></div>' : ''}</div>
+            <span class="text-gray-800">${opt}</span>
+        </div>`;
     });
-    html += `</div>`;
-
-    html += `
-            </div>
-        </div>
-    `;
+    html += `</div></div>`;
 
     container.innerHTML = html;
     updateNavDots();
-    lucide.createIcons();
-
-    // Scroll to top of content
+    if (window.lucide) lucide.createIcons();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ===== SELECT ANSWER =====
-function selectAnswer(optIdx) {
-    answers[currentQuestion] = optIdx;
-    renderQuestion();
-}
+function selectAnswer(idx) { answers[currentQuestion] = idx; renderQuestion(); }
 
-// ===== NAVIGATE =====
-function navigateQuestion(dir) {
-    const newQ = currentQuestion + dir;
-    if (newQ >= 0 && newQ < allQuestions.length) {
-        currentQuestion = newQ;
-        renderQuestion();
-    }
-}
+function confirmSubmit() { document.getElementById('modal-submit').style.display = 'flex'; }
+function closeSubmitModal() { document.getElementById('modal-submit').style.display = 'none'; }
 
-// ===== CONFIRM SUBMIT =====
-function confirmSubmit() {
-    const unanswered = allQuestions.length - Object.keys(answers).length;
-    const modal = document.getElementById('modal-submit');
-    const msg = document.getElementById('modal-unanswered');
-    
-    if (unanswered > 0) {
-        msg.textContent = `Bạn còn ${unanswered} câu chưa trả lời!`;
-    } else {
-        msg.textContent = 'Bạn đã trả lời tất cả câu hỏi.';
-    }
-    
-    modal.style.display = 'flex';
-}
-
-function closeSubmitModal() {
-    document.getElementById('modal-submit').style.display = 'none';
-}
-
-// ===== SUBMIT EXAM =====
+// ===== NỘP BÀI VÀ TÍNH ĐIỂM =====
 function submitExam() {
     closeSubmitModal();
-    
     if (examSubmitted) return;
     examSubmitted = true;
-    
-    // Stop timer
     clearInterval(timerInterval);
     
-    // Calculate score
     let correct = 0;
-    let partScores = { 1: { correct: 0, total: 10 }, 2: { correct: 0, total: 10 }, 3: { correct: 0, total: 5 }, 4: { correct: 0, total: 5 }, 5: { correct: 0, total: 5 } };
-
+    let pScores = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
     allQuestions.forEach((q, i) => {
-        const part = getPartNumber(i);
         if (answers[i] === q.correct) {
             correct++;
-            partScores[part].correct++;
+            pScores[getPartNumber(i)]++;
         }
     });
 
-    const totalQuestions = allQuestions.length;
-    const percentage = Math.round((correct / totalQuestions) * 100);
+    const percent = Math.round((correct / allQuestions.length) * 100);
+    let level = percent >= 90 ? 'Movers (A1+)' : percent >= 70 ? 'Starters (A1)' : percent >= 50 ? 'Pre-Starters' : 'Beginner';
 
-    // Determine level
-    let level, levelColor, levelDesc, emoji;
-    if (percentage >= 90) {
-        level = 'Movers (A1+)';
-        levelColor = 'text-green-600';
-        levelDesc = 'Xuất sắc! Học viên có nền tảng tiếng Anh rất tốt, sẵn sàng cho chương trình Movers.';
-        emoji = '🏆';
-    } else if (percentage >= 70) {
-        level = 'Starters (A1)';
-        levelColor = 'text-blue-600';
-        levelDesc = 'Tốt! Học viên có nền tảng vững chắc, phù hợp với chương trình Starters/Movers.';
-        emoji = '🌟';
-    } else if (percentage >= 50) {
-        level = 'Pre-Starters';
-        levelColor = 'text-amber-600';
-        levelDesc = 'Khá! Học viên cần bổ sung thêm từ vựng và ngữ pháp cơ bản trước khi học Starters.';
-        emoji = '💪';
-    } else {
-        level = 'Beginner';
-        levelColor = 'text-red-600';
-        levelDesc = 'Học viên cần bắt đầu học từ gốc với chương trình Phonics và từ vựng cơ bản.';
-        emoji = '🌱';
-    }
-
-    // Render results
-    document.getElementById('result-emoji').textContent = emoji;
-    document.getElementById('result-student-info').textContent = `${studentInfo.studentName} • ${studentInfo.studentClass} • ${studentInfo.studentAge} tuổi`;
-
-    // Animate score
-    const scoreNum = document.getElementById('score-number');
-    animateNumber(scoreNum, 0, correct, 1500);
-
-    // Animate ring
-    const circumference = 2 * Math.PI * 70; // 440
-    const offset = circumference - (correct / totalQuestions) * circumference;
-    setTimeout(() => {
-        document.getElementById('score-ring').style.strokeDashoffset = offset;
-    }, 200);
-
-    // Part breakdown
-    const breakdown = document.getElementById('score-breakdown');
-    const partNames = ['Vocabulary', 'Grammar', 'Reading', 'Matching', 'Fill Blanks'];
-    const partIcons = ['book-open', 'pencil', 'read', 'link', 'file-pen'];
-    const breakdownColors = [
-        { bg: 'bg-blue-50', text: 'text-blue-700', bar: 'bg-blue-500' },
-        { bg: 'bg-green-50', text: 'text-green-700', bar: 'bg-green-500' },
-        { bg: 'bg-purple-50', text: 'text-purple-700', bar: 'bg-purple-500' },
-        { bg: 'bg-orange-50', text: 'text-orange-700', bar: 'bg-orange-500' },
-        { bg: 'bg-pink-50', text: 'text-pink-700', bar: 'bg-pink-500' }
-    ];
+    document.getElementById('score-number').textContent = correct;
+    document.getElementById('result-student-info').textContent = `${studentInfo.studentName} • ${percent}%`;
     
-    let breakdownHtml = '';
-    for (let i = 1; i <= 5; i++) {
-        const ps = partScores[i];
-        const pct = Math.round((ps.correct / ps.total) * 100);
-        const c = breakdownColors[i-1];
-        breakdownHtml += `
-            <div class="${c.bg} rounded-xl p-3 text-center">
-                <i data-lucide="${partIcons[i-1]}" class="w-5 h-5 ${c.text} mx-auto mb-1"></i>
-                <p class="text-xs text-gray-500 mb-1">${partNames[i-1]}</p>
-                <p class="${c.text} font-bold text-lg">${ps.correct}/${ps.total}</p>
-                <div class="w-full bg-white/50 rounded-full h-1.5 mt-2">
-                    <div class="${c.bar} h-1.5 rounded-full" style="width: ${pct}%"></div>
-                </div>
-            </div>
-        `;
-    }
-    breakdown.innerHTML = breakdownHtml;
-
-    // Level badge
-    document.getElementById('level-badge').innerHTML = `
-        <div class="text-center">
-            <p class="text-gray-500 text-sm mb-2">Trình độ được đánh giá</p>
-            <p class="font-fredoka text-3xl ${levelColor} font-bold mb-2">${level}</p>
-            <p class="text-gray-600 text-sm">${levelDesc}</p>
-            <div class="flex justify-center gap-4 mt-4 text-sm">
-                <div class="text-center">
-                    <p class="text-2xl font-bold text-gray-800">${percentage}%</p>
-                    <p class="text-gray-400">Tỉ lệ đúng</p>
-                </div>
-                <div class="text-center">
-                    <p class="text-2xl font-bold text-gray-800">${Math.floor((totalQuestions * 40 * 60 - timeRemaining) / 60)}</p>
-                    <p class="text-gray-400">Phút làm bài</p>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Answers review
-    const reviewContainer = document.getElementById('answers-review');
-    let reviewHtml = '';
-    allQuestions.forEach((q, i) => {
-        const userAnswer = answers[i];
-        const isCorrect = userAnswer === q.correct;
-        const part = getPartNumber(i);
-        const optLabels = ['A', 'B', 'C', 'D'];
-        
-        reviewHtml += `
-            <div class="px-4 py-3 flex items-start gap-3 ${isCorrect ? 'bg-green-50/50' : 'bg-red-50/50'}">
-                <div class="flex-shrink-0 mt-0.5">
-                    ${isCorrect 
-                        ? '<div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center"><i data-lucide="check" class="w-3.5 h-3.5 text-green-600"></i></div>'
-                        : '<div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center"><i data-lucide="x" class="w-3.5 h-3.5 text-red-600"></i></div>'
-                    }
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm text-gray-800 font-medium">${i + 1}. ${q.question}</p>
-                    <p class="text-sm ${isCorrect ? 'text-green-600' : 'text-red-600'} mt-0.5">
-                        ${userAnswer !== undefined ? `Bạn chọn: ${optLabels[userAnswer]}. ${q.options[userAnswer]}` : 'Chưa trả lời'}
-                    </p>
-                    ${!isCorrect ? `<p class="text-sm text-green-600 mt-0.5">Đáp án đúng: ${optLabels[q.correct]}. ${q.options[q.correct]}</p>` : ''}
-                </div>
-                <span class="text-xs text-gray-400 flex-shrink-0">P${part}</span>
-            </div>
-        `;
-    });
-    reviewContainer.innerHTML = reviewHtml;
-
-    // Send results to sheet
     const resultData = {
         ...studentInfo,
         score: correct,
-        totalQuestions,
-        percentage,
-        level,
-        timeUsed: Math.floor((totalQuestions * 40 * 60 - timeRemaining) / 60) + ' phút',
-        p1Score: `${partScores[1].correct}/${partScores[1].total}`,
-        p2Score: `${partScores[2].correct}/${partScores[2].total}`,
-        p3Score: `${partScores[3].correct}/${partScores[3].total}`,
-        p4Score: `${partScores[4].correct}/${partScores[4].total}`,
-        p5Score: `${partScores[5].correct}/${partScores[5].total}`,
+        totalQuestions: allQuestions.length,
+        percentage: percent,
+        level: level,
+        timeUsed: Math.floor((40 * 60 - timeRemaining) / 60) + ' phút',
+        p1Score: `${pScores[1]}/10`, p2Score: `${pScores[2]}/10`, p3Score: `${pScores[3]}/5`, p4Score: `${pScores[4]}/5`, p5Score: `${pScores[5]}/5`,
         answers: JSON.stringify(answers)
     };
+
     sendToSheet(resultData);
-
-    // Show results page
     showPage('page-results');
-
-    // Confetti for good scores
-    if (percentage >= 70) {
-        createConfetti();
-    }
+    if (percent >= 70) createConfetti();
 }
 
-// ===== ANIMATE NUMBER =====
-function animateNumber(el, start, end, duration) {
-    const startTime = performance.now();
-    function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
-        const current = Math.round(start + (end - start) * eased);
-        el.textContent = current;
-        if (progress < 1) requestAnimationFrame(update);
-    }
-    requestAnimationFrame(update);
-}
-
-// ===== CONFETTI =====
-function createConfetti() {
-    const colors = ['#3b82f6', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899'];
-    for (let i = 0; i < 80; i++) {
-        setTimeout(() => {
-            const piece = document.createElement('div');
-            piece.className = 'confetti-piece';
-            piece.style.left = Math.random() * 100 + 'vw';
-            piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-            piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-            piece.style.width = Math.random() * 8 + 5 + 'px';
-            piece.style.height = Math.random() * 8 + 5 + 'px';
-            piece.style.animationDuration = Math.random() * 2 + 2 + 's';
-            piece.style.animationDelay = Math.random() * 0.5 + 's';
-            document.body.appendChild(piece);
-            setTimeout(() => piece.remove(), 4000);
-        }, i * 30);
-    }
-}
-
-// ===== SEND TO GOOGLE SHEET =====
+// ===== SEND TO GOOGLE SHEET (ĐÃ FIX LỖI) =====
 function sendToSheet(data) {
-    // If URL not configured, save locally
-    if (GOOGLE_SHEET_URL ='https://script.google.com/macros/s/AKfycbzj6LZz7KAM57f9xb77cZnUtrEbBznDefCJGHwTGw63zsoxY1RU1SRF4mE2f7af3LXB/exec') {
-        console.log('📊 Data to send to Google Sheet:', data);
-        // Save to localStorage as fallback
-        const existingData = JSON.parse(localStorage.getItem('examResults') || '[]');
-        existingData.push(data);
-        localStorage.setItem('examResults', JSON.stringify(existingData));
+    // Sửa lỗi so sánh === thay vì gán =
+    if (!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL.includes('AKfycbzj6LZz7KAM57f9xb77cZnUtrEbBznDefCJGHwTGw63zsoxY1RU1SRF4mE2f7af3LXB')) {
+        console.log('📊 Lưu cục bộ (URL chưa đổi):', data);
+        saveLocal(data);
         return;
     }
 
-    const formData = new FormData();
-    Object.keys(data).forEach(key => {
-        formData.append(key, data[key]);
-    });
+    const formData = new URLSearchParams();
+    Object.keys(data).forEach(key => formData.append(key, data[key]));
 
     fetch(GOOGLE_SHEET_URL, {
         method: 'POST',
-        body: formData
-    })
-    .then(res => {
-        if (res.ok) {
-            console.log('✅ Data sent to Google Sheet successfully!');
-        }
-    })
-    .catch(err => {
-        console.error('❌ Error sending data to Google Sheet:', err);
-        // Fallback: save locally
-        const existingData = JSON.parse(localStorage.getItem('examResults') || '[]');
-        existingData.push(data);
-        localStorage.setItem('examResults', JSON.stringify(existingData));
-    });
+        body: formData,
+        mode: 'no-cors' 
+    }).catch(e => saveLocal(data));
 }
 
-// ===== KEYBOARD SHORTCUTS =====
-document.addEventListener('keydown', (e) => {
-    if (!examStarted || examSubmitted) return;
-    
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-        e.preventDefault();
-        navigateQuestion(1);
-    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-        e.preventDefault();
-        navigateQuestion(-1);
-    } else if (e.key >= '1' && e.key <= '4') {
-        const optIdx = parseInt(e.key) - 1;
-        selectAnswer(optIdx);
+function saveLocal(data) {
+    const db = JSON.parse(localStorage.getItem('examResults') || '[]');
+    db.push(data);
+    localStorage.setItem('examResults', JSON.stringify(db));
+}
+
+function createConfetti() {
+    for (let i = 0; i < 50; i++) {
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        p.style.left = Math.random() * 100 + 'vw';
+        p.style.background = ['#3b82f6', '#f59e0b', '#10b981'][Math.floor(Math.random() * 3)];
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 3000);
     }
-});
-
-/*
-====================================================================
-GOOGLE APPS SCRIPT CODE - Paste this into your Google Sheet's Apps Script
-====================================================================
-
-function doPost(e) {
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-  
-  // If sheet doesn't have headers, add them
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      'Timestamp', 'Parent Name', 'Parent Phone', 'Student Name', 
-      'Student Age', 'Student Class', 'Score', 'Total Questions', 
-      'Percentage', 'Level', 'Time Used', 'P1 Score', 'P2 Score',
-      'P3 Score', 'P4 Score', 'P5 Score', 'Answers'
-    ]);
-  }
-  
-  sheet.appendRow([
-    e.parameter.timestamp || new Date().toLocaleString(),
-    e.parameter.parentName || '',
-    e.parameter.parentPhone || '',
-    e.parameter.studentName || '',
-    e.parameter.studentAge || '',
-    e.parameter.studentClass || '',
-    e.parameter.score || '',
-    e.parameter.totalQuestions || '',
-    e.parameter.percentage || '',
-    e.parameter.level || '',
-    e.parameter.timeUsed || '',
-    e.parameter.p1Score || '',
-    e.parameter.p2Score || '',
-    e.parameter.p3Score || '',
-    e.parameter.p4Score || '',
-    e.parameter.p5Score || '',
-    e.parameter.answers || ''
-  ]);
-  
-  return ContentService.createTextOutput(
-    JSON.stringify({ status: 'success' })
-  ).setMimeType(ContentService.MimeType.JSON);
 }
-
-function doGet() {
-  return ContentService.createTextOutput(
-    JSON.stringify({ status: 'active' })
-  ).setMimeType(ContentService.MimeType.JSON);
-}
-
-// After pasting this code:
-// 1. Click Deploy > New deployment
-// 2. Select type: Web app
-// 3. Set "Who has access" to "Anyone"
-// 4. Click Deploy
-// 5. Copy the URL and paste it in the GOOGLE_SHEET_URL constant above
-====================================================================
-*/
